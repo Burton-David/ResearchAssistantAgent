@@ -20,13 +20,13 @@ Researchers spend hours searching for credible citations. This tool automates an
 
 🚀 Features
 
-✅ Multi-Source Search: Queries arXiv and Semantic Scholar
-✅ Vector Search: Uses FAISS (with Pinecone support coming soon)
-✅ LLM Analysis: OpenAI embeddings help rank research papers
-✅ Citations & Quality Scoring: Finds the best sources for grant proposals
-✅ Asynchronous Processing: Fast and scalable
-✅ Extensible: Modular design for adding new data sources
-✅ Docker Support: Easy setup with docker-compose
+✅ Multi-Source Search: Queries arXiv and Semantic Scholar <br>
+✅ Vector Search: Uses FAISS (with Pinecone support coming soon) <br>
+✅ LLM Analysis: OpenAI embeddings help rank research papers <br>
+✅ Citations & Quality Scoring: Finds the best sources for grant proposals <br>
+✅ Asynchronous Processing: Fast and scalable <br>
+✅ Extensible: Modular design for adding new data sources <br>
+✅ Docker Support: Easy setup with docker-compose <br>
 
 📦 Installation
 
