@@ -23,6 +23,9 @@ torch>=2.0.0
 # Scientific computing
 numpy>=1.24.0
 
+# NLP processing
+spacy>=3.7.0
+
 # Retry logic with exponential backoff
 tenacity>=8.2.0
 
