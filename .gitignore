@@ -1,14 +1,9 @@
-# Environment variables
-.env
-.env.*
-
 # Python
 __pycache__/
 *.py[cod]
-*.class
+*$py.class
 *.so
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -20,22 +15,109 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*/.ipynb_checkpoints/*
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+virtualenv/
+.virtualenvs/
 
-# Project specific
-logs/
-data/paper_cache/
-data/vector_store/
+# Testing
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+test-results/
 *.log
-research_collector.log
 
-# OS specific
+# IDE and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+.spyderproject
+.spyproject
+.ropeproject
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+*.sublime-*
+
+# Security - CRITICAL
+*.pem
+*.key
+*.cert
+*.crt
+.env
+.env.*
+secrets/
+credentials/
+api_keys.json
+config/secrets.yaml
+*.secret
+secure_config.json
+
+# Claude Code / AI Tool Artifacts
+.claude/
+.aider*
+.copilot/
+.chatgpt/
+claude_*.log
+ai_conversation_*.txt
+.ai_cache/
+*_ai_generated*
+.llm_cache/
+
+# Project Specific
+*.db
+*.sqlite
+*.sqlite3
+data/cache/
+data/vectors/
+data/embeddings/
+models/
+*.faiss
+*.pkl
+*.pickle
+vector_store_data/
+downloads/
+temp/
+tmp/
+output/
+results/
+
+# Documentation builds
+docs/_build/
+docs/_static/
+docs/_templates/
+site/
+mkdocs.yml
+
+# OS Files
 .DS_Store
 .DS_Store?
 ._*
@@ -43,3 +125,65 @@ research_collector.log
 .Trashes
 ehthumbs.db
 Thumbs.db
+*~
+Desktop.ini
+
+# Logs and Debugging
+logs/
+*.log
+*.out
+*.err
+debug/
+.benchmarks/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb
+
+# Large files
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.model
+*.h5
+*.hdf5
+*.parquet
+
+# Backup files
+*.backup
+*.bkp
+*.tmp
+*.temp
+*_backup*
+*_old*
+
+# Research/Paper specific
+papers/
+literature/
+*.pdf
+citations_cache/
+bibliography_cache/
+
+# Local configuration
+local_config/
+.local/
+instance/
+*.local.*
+
+# Session files
+.session*
+SESSION_*
+session_*.json
+
+# API response cache
+.api_cache/
+api_responses/
+cache/
+
+# Monitoring
+.monitoring/
+metrics/
+grafana-data/
+prometheus-data/

@@ -1,118 +1,236 @@
-📚 AI-Powered Research Paper Analysis
+# Research Assistant Agent
 
-🚀 Accelerating Scientific Discovery with AI, LangChain, and Vector Databases
+An AI-powered research assistant for collecting and analyzing academic papers from ArXiv and Semantic Scholar. Built with async Python, FAISS vector search, and LLM integration for intelligent paper analysis.
 
- 
+## Features
 
- 
+- 🔍 **Multi-source paper collection** from ArXiv and Semantic Scholar APIs
+- ⚡ **Async/await architecture** for efficient concurrent API calls  
+- 🚦 **Intelligent rate limiting** with adaptive backoff strategies
+- 🧠 **LLM-powered analysis** for extracting insights from papers
+- 📊 **Vector similarity search** using FAISS for finding related papers
+- 🖥️ **Rich CLI interface** with colorful tables and progress tracking
 
- 
+## Installation
 
-🔍 Finding high-quality research papers shouldn’t be hard. This project leverages LLMs, LangChain, FAISS vector search, and scientific databases to build an AI-powered research assistant that helps scientists find high-quality citations for research grant applications, literature reviews, and academic exploration.
-
-	💡 Why This Matters?
-Researchers spend hours searching for credible citations. This tool automates and enhances the process by ranking papers based on:
-		•	Relevance (semantic search via embeddings)
-	•	Citation Impact (highly cited papers)
-	•	Methodology (identifying strong research techniques)
-	•	Recency (fresh papers)
-	•	Venue Quality (high-impact journals/conferences)
-
-🚀 Features
-
-✅ Multi-Source Search: Queries arXiv and Semantic Scholar <br>
-✅ Vector Search: Uses FAISS (with Pinecone support coming soon) <br>
-✅ LLM Analysis: OpenAI embeddings help rank research papers <br>
-✅ Citations & Quality Scoring: Finds the best sources for grant proposals <br>
-✅ Asynchronous Processing: Fast and scalable <br>
-✅ Extensible: Modular design for adding new data sources <br>
-✅ Docker Support: Easy setup with docker-compose <br>
-
-📦 Installation
-
-1️⃣ Clone the Repository
-
-git clone https://github.com/Burton-David/ResearchAssistantAgent
+```bash
+# Clone the repository
+git clone https://github.com/davidburton/ResearchAssistantAgent.git
 cd ResearchAssistantAgent
 
-2️⃣ Set Up the Environment
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-Ensure you have Python 3.8+ installed.
+# Install in development mode
+pip install -e .
+```
 
-python -m venv venv
-source venv/bin/activate  # Mac/Linux
-venv\Scripts\activate     # Windows
-pip install -r requirements.txt
+## Quick Start
 
-3️⃣ API Key Setup
+### Command Line Interface
 
-You’ll need API keys for Semantic Scholar and OpenAI. Create a .env file in the config/ directory:
+Search for papers across both ArXiv and Semantic Scholar:
 
-mkdir config && touch config/.env
+```bash
+# Basic search
+research-assistant search "transformer neural networks"
 
-Add the following to .env:
+# Search only ArXiv
+research-assistant search "quantum computing" --source arxiv --limit 20
 
-OPENAI_API_KEY=your_openai_key
-TAVILY_API_KEY=your_tavily_key
-SEMANTIC_SCHOLAR_API_KEY=your_semantic_scholar_key
+# Search by author
+research-assistant advanced-search --author "Yoshua Bengio" --limit 10
 
-4️⃣ Run the Research Collector
+# Search by category (ArXiv)
+research-assistant advanced-search --category cs.AI --limit 15
 
-python main.py
+# Store results in vector database (requires OpenAI API key for embeddings)
+research-assistant search "large language models" --store
+```
 
-🐳 Docker Deployment
+### Python API
 
-For an isolated, ready-to-use setup, run:
+```python
+import asyncio
+from research_assistant import ArxivCollector, SemanticScholarCollector
 
-docker-compose up --build
+async def search_papers():
+    # Search ArXiv
+    async with ArxivCollector() as arxiv:
+        papers = await arxiv.search("cat:cs.LG transformer", max_results=5)
+        for paper in papers:
+            print(f"{paper.title} - {paper.arxiv_id}")
+    
+    # Search Semantic Scholar  
+    async with SemanticScholarCollector() as s2:
+        papers = await s2.search("deep learning", limit=5)
+        for paper in papers:
+            print(f"{paper.title} - Citations: {paper.citation_count}")
 
-This ensures all dependencies, including FAISS, are set up inside a container.
+asyncio.run(search_papers())
+```
 
-🛠️ How It Works
+## Architecture
 
-🔹 1. Collect Papers
+The project follows a modular architecture:
 
-papers = await paper_collector.fetch_papers("climate change AI", max_results=50)
+```
+src/research_assistant/
+├── collectors/          # API clients for paper sources
+│   ├── arxiv_collector.py
+│   └── semantic_scholar_collector.py
+├── analyzers/          # LLM-based paper analysis
+│   └── paper_analyzer.py
+├── vector_store/       # FAISS similarity search
+│   └── faiss_store.py
+└── utils/             # Rate limiting and helpers
+    └── rate_limiter.py
+```
 
-	•	Fetches from Semantic Scholar & arXiv
-	•	Uses pagination to get full results
-	•	Filters for high-quality research
+## Configuration
 
-🔹 2. Store in Vector Database
+Set environment variables for API keys:
 
-await paper_collector._store_in_vector_db(papers)
+```bash
+export OPENAI_API_KEY="your-api-key"  # For paper analysis and embeddings
+export SEMANTIC_SCHOLAR_API_KEY="your-key"  # Optional, for higher rate limits
+```
 
-	•	Converts papers to embeddings using OpenAI
-	•	Stores them in FAISS (local, fast, scalable)
+## Development
 
-🔹 3. Perform AI-Driven Analysis
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
 
-results = await analyzer.analyze_research_topic("climate change AI")
+# Run tests
+pytest
 
-	•	Ranks papers based on quality metrics
-	•	Uses similarity search to find related papers
+# Format code
+black src/ tests/
 
-📍 Roadmap
+# Type checking
+mypy src/
+```
 
-✔️ MVP: Fetch papers + basic FAISS search ✅
-🔜 LangChain Summarization: AI-generated research summaries 🔄
-🔜 Pinecone Support: Scalable cloud-based vector search
-🔜 Full-Text Embeddings: Extract knowledge beyond abstracts
-🔜 Web UI: Interactive dashboard for exploring research
+## API Rate Limits
 
-	Got feature ideas? Open an issue or submit a pull request! 🚀
+The tool respects API rate limits:
+- **ArXiv**: Max 3 requests/second (configurable)
+- **Semantic Scholar**: 100 requests per 5 minutes (anonymous)
 
-🧑‍💻 Contributing
+## Advanced Usage
 
-Want to help make research easier? Contributions are welcome!
-	1.	Fork this repo
-	2.	Create a feature branch (git checkout -b feature-name)
-	3.	Commit your changes (git commit -m "Added new feature")
-	4.	Push to GitHub (git push origin feature-name)
-	5.	Open a pull request
+### Using the Rate Limiter
 
-📜 License
+```python
+from research_assistant import RateLimiter, AdaptiveRateLimiter
 
-This project is MIT Licensed – free to use, modify, and contribute.
+# Fixed rate limiting
+limiter = RateLimiter(max_calls=10, time_window=60)  # 10 calls per minute
 
-🚀 Join us in making research faster, smarter, and better.
+# Adaptive rate limiting (adjusts based on server responses)
+adaptive = AdaptiveRateLimiter(
+    initial_rate=10.0,
+    min_rate=1.0,
+    max_rate=50.0,
+    backoff_factor=0.5
+)
+
+# Use with async context manager
+async with limiter:
+    # Your API call here
+    pass
+```
+
+### Paper Analysis with LLMs
+
+```python
+from research_assistant import PaperAnalyzer, AnalysisType
+
+analyzer = PaperAnalyzer(api_key="your-openai-key")
+
+# Analyze a paper
+analysis = await analyzer.analyze_paper(
+    paper_text="Paper abstract or full text...",
+    paper_id="arxiv.2301.00001",
+    paper_title="Attention Is All You Need",
+    analysis_type=AnalysisType.METHODOLOGY
+)
+
+print(analysis.methodology)
+print(analysis.key_contributions)
+```
+
+### Vector Store Operations
+
+```python
+from research_assistant import FAISSVectorStore, Document
+
+# Initialize vector store
+store = FAISSVectorStore(dimension=1536, index_type="flat")
+
+# Add documents
+doc = Document(
+    id="paper_001",
+    text="Paper content...",
+    metadata={"title": "Paper Title", "authors": ["Author 1"]},
+    embedding=[0.1, 0.2, ...]  # 1536-dimensional vector
+)
+store.add_documents([doc])
+
+# Search similar documents
+results = store.search(query_embedding, k=10)
+
+# Save and load
+store.save("./my_index")
+loaded_store = FAISSVectorStore.load("./my_index")
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=research_assistant tests/
+
+# Run specific test file
+pytest tests/unit/utils/test_rate_limiter.py
+```
+
+## Project Status
+
+This is an actively developed research tool. Current focus areas:
+- ✅ Core API collectors (ArXiv, Semantic Scholar)
+- ✅ Rate limiting and async architecture
+- ✅ FAISS vector store integration
+- ✅ CLI interface
+- 🚧 Full paper content extraction
+- 🚧 Advanced LLM analysis pipelines
+- 📋 Web UI dashboard
+- 📋 Citation graph analysis
+
+## Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Acknowledgments
+
+Built with:
+- [aiohttp](https://docs.aiohttp.org/) for async HTTP
+- [FAISS](https://github.com/facebookresearch/faiss) for vector search
+- [Click](https://click.palletsprojects.com/) for CLI
+- [Rich](https://rich.readthedocs.io/) for beautiful terminal output
