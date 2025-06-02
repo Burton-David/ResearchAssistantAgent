@@ -40,6 +40,10 @@ setup(
         "tenacity>=8.2.0",
         "python-dotenv>=1.0.0",
         "tqdm>=4.66.0",
+        "spacy>=3.5.0",
+        "httpx>=0.24.0",
+        "beautifulsoup4>=4.12.0",
+        "lxml>=4.9.0",
     ],
     extras_require={
         "dev": [
@@ -53,6 +57,7 @@ setup(
     entry_points={
         "console_scripts": [
             "research-assistant=research_assistant.cli:main",
+            "research-assistant-pro=research_assistant.cli_enhanced:cli",
         ],
     },
 )

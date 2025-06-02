@@ -1,0 +1,38 @@
+[
+  {
+    "type": "search",
+    "data": {
+      "query": "transformer neural networks attention mechanism",
+      "databases": ["arxiv", "semantic_scholar"],
+      "limit": 5
+    }
+  },
+  {
+    "type": "search",
+    "data": {
+      "query": "CRISPR gene editing medical applications",
+      "databases": ["pubmed", "semantic_scholar"],
+      "limit": 5
+    }
+  },
+  {
+    "type": "search",
+    "data": {
+      "query": "quantum computing error correction",
+      "databases": ["arxiv"],
+      "limit": 5
+    }
+  },
+  {
+    "type": "cite",
+    "data": {
+      "text": "Recent advances in transformer architectures have revolutionized natural language processing. The self-attention mechanism allows models to capture long-range dependencies more effectively than traditional RNNs."
+    }
+  },
+  {
+    "type": "cite",
+    "data": {
+      "text": "CRISPR-Cas9 systems have shown promising results in treating genetic disorders. Clinical trials demonstrate safety and efficacy in treating sickle cell disease."
+    }
+  }
+]
